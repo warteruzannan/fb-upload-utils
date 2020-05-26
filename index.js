@@ -40,7 +40,7 @@ function createUploadImageService(bucketPath = "/", expiresAt = "01-01-2200") {
      * @param {String} path         <path to file> e.g, /user/uploads/profile.png
      * @param {String} file_name    <file_name> e.g. profile
      * @param {String} mimetype     <mineype> e.g. image/png
-     * @returns {String} return a publicUrl that expires in
+     * @returns {Promise<String>}   returns a promisse with a publicUrl that expires in
      */
     const uploadByPath = (path, file_name, mimetype) => {
         let metadata = { contentType: "image/jpeg" };
