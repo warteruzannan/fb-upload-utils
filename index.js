@@ -1,7 +1,12 @@
 const admin = require("firebase-admin");
 const fs = require("fs");
 
-function createUploadImageService(bucketPath = "/") {
+/**
+ * Creates a UploadImageService
+ * @param {String} bucketPath   <path_to_storage_bucket> i.g., gs://app-name.appspot.com default is '/'
+ * @param {String} expiresAt    <expires_date> i.g. 01-01-2200 default 'is 01-01-2200'
+ */
+function createUploadImageService(bucketPath = "/", expiresAt = "01-01-2200") {
     const __uploadByPath = (path, file_name, metadata, cb) => {
         const bucket = admin.storage().bucket(bucketPath);
         const file = bucket.file(file_name);
@@ -17,7 +22,7 @@ function createUploadImageService(bucketPath = "/") {
         writeStream.on("finish", function () {
             file.getSignedUrl({
                 action: "read",
-                expires: "03-09-2491",
+                expires: expiresAt,
             })
                 .then((publicUrl) => {
                     cb(null, publicUrl[0]);
@@ -30,10 +35,13 @@ function createUploadImageService(bucketPath = "/") {
         readStream.pipe(writeStream);
     };
 
-    const uploadByFile = ({ path, file_name, mimetype }) => {
-        return uploadByPath(path, file_name, mimetype);
-    };
-
+    /**
+     * 1- Uploads a image to firebase storage usegin firebase admin
+     * @param {String} path         <path to file> e.g, /user/uploads/profile.png
+     * @param {String} file_name    <file_name> e.g. profile
+     * @param {String} mimetype     <mineype> e.g. image/png
+     * @returns {String} return a publicUrl that expires in
+     */
     const uploadByPath = (path, file_name, mimetype) => {
         let metadata = { contentType: "image/jpeg" };
 
@@ -54,7 +62,7 @@ function createUploadImageService(bucketPath = "/") {
         });
     };
 
-    return { uploadByPath, uploadByFile };
+    return { uploadByPath };
 }
 
 module.exports = { createUploadImageService };
