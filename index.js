@@ -1,5 +1,6 @@
 const admin = require("firebase-admin");
 const fs = require("fs");
+const axios = require("axios");
 
 /**
  * Creates a UploadImageService
@@ -7,6 +8,18 @@ const fs = require("fs");
  * @param {String} expiresAt    <expires_date> i.g. 01-01-2200 default 'is 01-01-2200'
  */
 function createUploadImageService(bucketPath = "/", expiresAt = "01-01-2200") {
+    const getAssignedUrl = async (full_path) => {
+        const bucket = admin.storage().bucket(bucketPath);
+        const file = bucket.file(full_path);
+
+        const publicUrl = await file.getSignedUrl({
+            action: "read",
+            expires: expiresAt,
+        });
+
+        return publicUrl[0];
+    };
+
     const __uploadByPath = (path, file_name, metadata, cb) => {
         const bucket = admin.storage().bucket(bucketPath);
         const file = bucket.file(file_name);
@@ -62,7 +75,9 @@ function createUploadImageService(bucketPath = "/", expiresAt = "01-01-2200") {
         });
     };
 
-    return { uploadByPath };
+    dowloadFile = (path) => {};
+
+    return { uploadByPath, getAssignedUrl };
 }
 
 module.exports = { createUploadImageService };

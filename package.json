@@ -1,16 +1,16 @@
 {
-  "name": "fb-upload-utils",
-  "version": "0.0.1",
-  "description": "firebase upload image utils",
-  "main": "index.js",
-  "scripts": {
-    "test": "jest"
-  },
-  "keywords": [
-    "Firebase",
-    "Images",
-    "Upload"
-  ],
-  "author": "Warteruzannan S. cunha",
-  "license": "ISC"
+    "name": "fb-upload-utils",
+    "version": "0.0.1",
+    "description": "firebase upload image utils",
+    "main": "index.js",
+    "scripts": {
+        "test": "jest"
+    },
+    "keywords": [
+        "Firebase",
+        "Images",
+        "Upload"
+    ],
+    "author": "Warteruzannan S. cunha",
+    "license": "ISC"
 }
